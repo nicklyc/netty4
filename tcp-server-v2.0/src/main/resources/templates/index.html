@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+</head>
+<body>
+	<form method="get" action="/getAllOnlieDevice">
+		
+		<button type="submit" value="查询在线设备">查询在线设备</button>
+	</form>
+	<hr/>
+		<form method="post" action="/instructOrderToDevice">
+		<span>输入指令</span>
+		<input type="text" name="order" value=""/>
+		<span>指定设备编号</span>
+		<input type="text" name="deviceId" value=""/>
+		<button type="submit" value="下发指令">下发指令</button>
+	</form>
+</body>
+</html>
