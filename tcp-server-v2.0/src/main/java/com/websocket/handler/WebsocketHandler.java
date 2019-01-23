@@ -2,8 +2,12 @@ package com.websocket.handler;
 
 import java.util.Map;
 
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,6 +90,31 @@ public class WebsocketHandler extends ChannelInboundHandlerAdapter{
 		logger.info("session销毁");
 		super.channelUnregistered(ctx);
 		super.channelUnregistered(ctx);
+	}
+
+
+	@Override
+	public void userEventTriggered(ChannelHandlerContext ctx, Object e)
+			throws Exception {
+		if (e instanceof IdleStateEvent) {
+			if(((IdleStateEvent)e).state() .equals( IdleState.ALL_IDLE)){
+				 ctx.channel().close();
+				 sessionChannle.destorySession(ctx);
+				 logger.info("连接通道关闭 Channel id是："+ctx.channel().id());
+				 logger.info("session销毁");
+				 
+				//在这里可以维护连接，异步回调
+				ChannelFuture write = ctx.channel().write("");
+				write.addListener(new ChannelFutureListener() {
+					@Override
+					public void operationComplete(ChannelFuture future) throws Exception {
+						 ctx.channel().close();
+					}
+				});
+			}
+		} else {
+			super.userEventTriggered(ctx, e);
+		}
 	}
 	
 	
