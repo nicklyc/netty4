@@ -108,4 +108,20 @@ public class SessionChannle {
 		}
 		return online;
 	}
+	
+	
+
+	
+
+	    private volatile static SessionChannle instance;
+	    public  SessionChannle getInstance(){
+	        if(instance ==null) {
+	            synchronized (SessionChannle.class) {
+	                if (instance == null)
+	                    instance = new SessionChannle();              //instance为volatile，现在没问题了
+	            }
+	        }
+	        return instance;
+	    }
+	
 }

@@ -1,8 +1,11 @@
 package com.server;
 
+import java.util.concurrent.TimeUnit;
+
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +32,7 @@ public class WebScoketServer {
 		ChannelInitializer initializer =new ChannelInitializer<Channel>() {
 			protected void initChannel(Channel ch) throws Exception {
 				   ChannelPipeline pipeline = ch.pipeline();
+				    pipeline.addLast("idle", new IdleStateHandler(90,90, 190, TimeUnit.SECONDS));
 				    pipeline.addLast("http-decoder",new HttpDecoder());
 			        pipeline.addLast("http-encoder",new HttpEncoder());
 			        pipeline.addLast(new WebsocketHandler());

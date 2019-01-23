@@ -24,10 +24,9 @@ import io.netty.handler.logging.LoggingHandler;
 public class ServerStarter {
 	private final static Logger logger = LoggerFactory.getLogger(ServerStarter.class);
 	
-    private static final int bossSize=4;
-    private static final int workSize=10;
-    EventLoopGroup bossGroup = new NioEventLoopGroup(bossSize);
-    EventLoopGroup workerGroup = new NioEventLoopGroup(workSize);
+    private static final int Size=Runtime.getRuntime().availableProcessors();
+    EventLoopGroup bossGroup = new NioEventLoopGroup(Size);
+    EventLoopGroup workerGroup = new NioEventLoopGroup(Size);
 	public   ChannelFuture startServer(String servername,int portNumber,ChannelInitializer initializer ) throws InterruptedException {
         try {
         	ServerBootstrap boot = new ServerBootstrap();

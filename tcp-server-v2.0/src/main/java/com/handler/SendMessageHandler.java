@@ -21,7 +21,7 @@ public class SendMessageHandler {
 	 private SessionChannle sessionChannle;
 
     /**
-     * 
+     * 向指定设备发送消息
      * @param Mess
      * @param deviceId
      * @return

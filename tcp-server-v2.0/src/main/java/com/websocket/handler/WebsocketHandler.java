@@ -1,5 +1,7 @@
 package com.websocket.handler;
 
+import java.util.Map;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -9,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.websocket.bean.HttpRequstBean;
 import com.websocket.bean.WebSocketFrameBean;
 public class WebsocketHandler extends ChannelInboundHandlerAdapter{
-//private HttpRequstHandler   httpRequstHandler=new HttpRequstHandler();
+	static com.server.SessionChannle  sessionChannle=new com.server.SessionChannle();
 	private final static Logger logger = LoggerFactory.getLogger(WebsocketHandler.class);
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
 			throws Exception {
@@ -29,7 +31,12 @@ public class WebsocketHandler extends ChannelInboundHandlerAdapter{
 				logger.info("Websocket收到的消息==>"+received);
 			}
 			
+			
 			String responseString="";//要响应的消息
+			//对消息经处理：
+			Map session = sessionChannle.getSession(ctx);
+			//session.put(key, value);
+			
 			responseString="服务器原文返回==>"+received;//测试原文返回
 			response.setPayloadData(responseString.getBytes());
 			ctx.writeAndFlush(response);//回写消息
@@ -55,19 +62,29 @@ public class WebsocketHandler extends ChannelInboundHandlerAdapter{
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception {
-		cause.printStackTrace();
+		logger.error("---捕获异常---" + cause);
+		super.exceptionCaught(ctx, cause);
 		ctx.close();
 	}
 
 	@Override
 	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
+		logger.info("channelRegistered-------");
+		logger.info("新建Channel id是：" + ctx.channel().id());
+		logger.info("新设备上线");
+		sessionChannle.creatSession(ctx);
+		logger.info("session创建");
 		super.channelRegistered(ctx);
 	}
 
 	@Override
 	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
-		// TODO Auto-generated method stub
+		logger.info("连接断开Channel id是：" + ctx.channel().id());
+		Map session = sessionChannle.getSession(ctx);
+		logger.info("设备下线：下线设备id===>" + session.get("deviceId"));
+		sessionChannle.destorySession(ctx);
+		logger.info("session销毁");
+		super.channelUnregistered(ctx);
 		super.channelUnregistered(ctx);
 	}
 	
