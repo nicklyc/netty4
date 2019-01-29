@@ -8,34 +8,26 @@
 <title>Insert title here</title>
 </head>
 <div id="input-box">
- <input class="chat-input" id="chat-input" placeholder="message"></input>
- <input id="myid" placeholder="myid"/>
- <button id="login-button" onclick="login()">登录</button>
- <input id="friendid" placeholder="friendid"/>
-<button class="chat-button" id="send" onclick="send()">发送</button>
+ <input class="chat-input" id="chat-input"  ></input>
+<button class="chat-button" id="send" >发送</button>
 </div> 
 </div>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
-var ipaddress="127.0.0.1";
-//新建socket对象
-window.socket = new WebSocket("ws://127.0.0.1:10086/ws");
+window.socket = new WebSocket("ws://127.0.0.1:10087/ws");
 //监听netty服务器消息并打印到页面上
 socket.onmessage = function(event) {
       var datas=event.data.split(",");
-      console.log("服务器消息===="+datas);
-      $("#chat-box").text(datas);
+      alert("服务器消息===="+datas);
+     
       }
 //将发送人接收人的id和要发生的消息发送出去
-function send(){
-    console.log($("#chat-input").val())
-    var data=$("#myid").val()+","+$("#friendid").val()+","+$("#chat-input").val()
-    socket.send(data)
-}     
-//登录事件
-function login(){
-	alert();
-    var data=$("#myid").val();socket.send(data);
-}
+$(document).ready(function(){
+  $("#send").click(function(){
+	  
+	 　socket.send($("#chat-input").val());
+  });
+}); 
 </script>
 
 </body>
