@@ -14,18 +14,22 @@
 </div>
 <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript">
-window.socket = new WebSocket("ws://127.0.0.1:10087/ws");
+window.socket = new WebSocket("ws://192.168.80.1:9091/ws");
 //监听netty服务器消息并打印到页面上
 socket.onmessage = function(event) {
       var datas=event.data.split(",");
-      alert("服务器消息===="+datas);
-     
+    //  alert("服务器消息===="+datas);
+      console.log("服务器消息===="+datas)
       }
 //将发送人接收人的id和要发生的消息发送出去
 $(document).ready(function(){
   $("#send").click(function(){
-	  
-	 　socket.send($("#chat-input").val());
+	  for(var i=0;i<30;i++){
+		
+		  socket.send($("#chat-input").val()+i);
+	
+		  };
+	 //　socket.send($("#chat-input").val());
   });
 }); 
 </script>

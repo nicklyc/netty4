@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 import com.websocket.bean.HttpRequstBean;
 import com.websocket.bean.WebSocketFrameBean;
 public class WebsocketHandler extends ChannelInboundHandlerAdapter{
+	
+	private String deviceId;
+	
 	static com.server.SessionChannle  sessionChannle=new com.server.SessionChannle();
 	private final static Logger logger = LoggerFactory.getLogger(WebsocketHandler.class);
 	public void channelRead(ChannelHandlerContext ctx, Object msg)
@@ -41,7 +44,7 @@ public class WebsocketHandler extends ChannelInboundHandlerAdapter{
 			Map session = sessionChannle.getSession(ctx);
 			//session.put(key, value);
 			
-			responseString="服务器原文返回==>"+received;//测试原文返回
+			responseString="服务器原文返回==>1"+received;//测试原文返回
 			response.setPayloadData(responseString.getBytes());
 			ctx.writeAndFlush(response);//回写消息
 			

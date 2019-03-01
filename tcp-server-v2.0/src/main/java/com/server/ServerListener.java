@@ -25,13 +25,13 @@ public class ServerListener implements ApplicationListener<ApplicationReadyEvent
       * 随项目启动而启动
       */
 	public void onApplicationEvent(ApplicationReadyEvent event) {
+		TCPServer.start(TCP);
+		if(System.getProperty("os.name").contains("Windows")) return;
 		new Thread(new Runnable() {
 			public void run() {
 				WebScoketServer.start(Websocket);
 			}
 		})
 		.start();
-		
-		TCPServer.start(TCP);
-	}
+	}		
 }
