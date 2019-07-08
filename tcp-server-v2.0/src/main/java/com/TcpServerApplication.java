@@ -9,7 +9,7 @@ import com.server.ServerInitializer;
 @SpringBootApplication()
 public class TcpServerApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(TcpServerApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(TcpServerApplication.class, args);
+    }
 }
